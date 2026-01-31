@@ -29,7 +29,7 @@ O projeto segue o padrão de camadas recomendado pelo ecossistema Spring, garant
 
 ---
 
-## 🧪 Qualidade de Código e Testes
+## Qualidade de Código e Testes
 Um dos pilares desta migração foi a garantia de estabilidade.
 
 - **Testes de Integração de Repositório:**  
