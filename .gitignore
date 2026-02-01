@@ -36,4 +36,8 @@ target/
 .classpath
 .project
 
+<<<<<<< HEAD
 .vscode/
+=======
+.vscode/
+>>>>>>> d5ce29747b1b49e6171bff5803682a14ff36efce
