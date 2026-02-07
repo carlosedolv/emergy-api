@@ -1,8 +1,9 @@
 package com.carlosedolv.emergy_api.controllers;
 
-import com.carlosedolv.emergy_api.dtos.request.UserInsertDTO;
-import com.carlosedolv.emergy_api.dtos.response.UserDTO;
+import com.carlosedolv.emergy_api.dtos.request.UserRequestDTO;
+import com.carlosedolv.emergy_api.dtos.response.UserResponseDTO;
 import com.carlosedolv.emergy_api.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,32 +19,32 @@ public class UserController {
     private UserService service;
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> findAll() {
-        List<UserDTO> list = service.findAll();
+    public ResponseEntity<List<UserResponseDTO>> findAll() {
+        List<UserResponseDTO> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
-        UserDTO userDTO = service.findById(id);
-        return ResponseEntity.ok().body(userDTO);
+    public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
+        UserResponseDTO userResponseDTO = service.findById(id);
+        return ResponseEntity.ok().body(userResponseDTO);
     }
 
     @GetMapping(value = "/email/{email}")
-    public ResponseEntity<UserDTO> findByEmail(@PathVariable String email) {
-        UserDTO userDTO = service.findByEmail(email);
-        return ResponseEntity.ok().body(userDTO);
+    public ResponseEntity<UserResponseDTO> findByEmail(@PathVariable String email) {
+        UserResponseDTO userResponseDTO = service.findByEmail(email);
+        return ResponseEntity.ok().body(userResponseDTO);
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> save(@RequestBody UserInsertDTO dto) {
-        UserDTO userDTO = service.save(dto);
+    public ResponseEntity<UserResponseDTO> save(@Valid @RequestBody UserRequestDTO dto) {
+        UserResponseDTO userResponseDTO = service.save(dto);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(userDTO.id())
+                .buildAndExpand(userResponseDTO.id())
                 .toUri();
-        return ResponseEntity.created(uri).body(userDTO);
+        return ResponseEntity.created(uri).body(userResponseDTO);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -53,8 +54,8 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserInsertDTO dto) {
-        UserDTO userDTO = service.update(id, dto);
-        return ResponseEntity.ok().body(userDTO);
+    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @Valid @RequestBody UserRequestDTO dto) {
+        UserResponseDTO userResponseDTO = service.update(id, dto);
+        return ResponseEntity.ok().body(userResponseDTO);
     }
 }

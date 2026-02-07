@@ -1,4 +1,4 @@
-package com.carlosedolv.emergy_api.services.exceptions;
+package com.carlosedolv.emergy_api.controllers.exceptions;
 
 import java.time.Instant;
 

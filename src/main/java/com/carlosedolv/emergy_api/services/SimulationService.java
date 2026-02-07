@@ -1,6 +1,7 @@
 package com.carlosedolv.emergy_api.services;
 
-import com.carlosedolv.emergy_api.dtos.response.SimulationDTO;
+import com.carlosedolv.emergy_api.dtos.request.SimulationRequestDTO;
+import com.carlosedolv.emergy_api.dtos.response.SimulationResponseDTO;
 import com.carlosedolv.emergy_api.entities.Simulation;
 import com.carlosedolv.emergy_api.entities.User;
 import com.carlosedolv.emergy_api.repositories.SimulationRepository;
@@ -22,28 +23,28 @@ public class SimulationService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<SimulationDTO> findAll() {
-        return repository.findAll().stream().map(SimulationDTO::new).toList();
+    public List<SimulationResponseDTO> findAll() {
+        return repository.findAll().stream().map(SimulationResponseDTO::new).toList();
     }
 
-    public SimulationDTO findById(Long id) {
-        return new SimulationDTO(
+    public SimulationResponseDTO findById(Long id) {
+        return new SimulationResponseDTO(
                 repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id))
         );
     }
 
-    public List<SimulationDTO> findByTitle(String title) {
-        return repository.findByTitle(title).stream().map(SimulationDTO::new).toList();
+    public List<SimulationResponseDTO> findByTitle(String title) {
+        return repository.findByTitle(title).stream().map(SimulationResponseDTO::new).toList();
     }
 
-    public SimulationDTO save(SimulationDTO dto) {
-        if(dto.user() == null || dto.user().id() == null){
+    public SimulationResponseDTO save(SimulationRequestDTO dto) {
+        if(dto.userId() == null){
             throw new ResourceDataIntegrityException("User ID is required for simulation.");
         }
-        User user  = userRepository.findById(dto.user().id())
-                .orElseThrow(() -> new ResourceNotFoundException(dto.user().id()));
+        User user  = userRepository.findById(dto.userId())
+                .orElseThrow(() -> new ResourceNotFoundException(dto.userId()));
         Simulation simulation = repository.save(copyDtoToEntity(dto, user));
-        return new SimulationDTO(simulation);
+        return new SimulationResponseDTO(simulation);
     }
 
     public void delete(Long id) {
@@ -56,28 +57,28 @@ public class SimulationService {
     }
 
     @Transactional
-    public SimulationDTO update(Long id, SimulationDTO dto) {
+    public SimulationResponseDTO update(Long id, SimulationRequestDTO dto) {
         try {
             Simulation simulation = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-            updateSimulation(simulation, dto);
-            return new SimulationDTO(simulation);
+            updateSimulation(dto, simulation);
+            return new SimulationResponseDTO(simulation);
         } catch (DataIntegrityViolationException e) {
             throw new ResourceDataIntegrityException("Violations of database restrictions to update.");
         }
 
     }
 
-    private Simulation copyDtoToEntity(SimulationDTO dto, User user) {
+    private Simulation copyDtoToEntity(SimulationRequestDTO dto, User user) {
         Simulation simulation = new Simulation();
         simulation.setTitle(dto.title());
-        simulation.setTitle(dto.title());
+        simulation.setLiters(dto.liters());
         simulation.setType(dto.type());
         simulation.setResult(dto.result());
         simulation.setUser(user);
         return simulation;
     }
 
-    private void updateSimulation(Simulation entity, SimulationDTO dto) {
+    private void updateSimulation(SimulationRequestDTO dto, Simulation entity) {
         entity.setTitle(dto.title());
         entity.setLiters(dto.liters());
         entity.setType(dto.type());

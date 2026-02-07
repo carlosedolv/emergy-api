@@ -2,6 +2,12 @@ package com.carlosedolv.emergy_api.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -11,73 +17,37 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
+    @Size(min = 3, max = 20, message = "O nome deve ter entre 3 e 80 caracteres")
     private String name;
+
+    @NotBlank
+    @Email
+    @Column(unique = true)
     private String email;
+
+    @NotBlank(message = "A senha é obrigatória")
+    @Size(min = 4, message = "A senha deve ter no mínimo 4 caracteres")
     private String password;
+
+    @Past(message = "A data de nascimento deve estar no passado")
     private LocalDate birthday;
+
+    @Setter(AccessLevel.NONE)
     private Instant createdAt;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Simulation> simulations = new ArrayList<>();
-
-    public User() {
-    }
-
-    public User(String name, String email, String password, LocalDate birthday) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.birthday = birthday;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public LocalDate getBirthday() {
-        return birthday;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
-    }
 
     @PrePersist
     public void prePersist() {

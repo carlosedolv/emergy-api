@@ -1,91 +1,62 @@
 package com.carlosedolv.emergy_api.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
 @Table(name = "simulations")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Simulation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "O título é obrigatório")
+    @Size(min = 3, max = 80, message = "O título deve ter entre 3 e 80 caracteres")
     private String title;
+
+    @NotNull(message = "A quantidade de litros é obrigatória")
+    @Positive(message = "A quantidade de litros deve ser maior que zero")
     private Double liters;
+
+    @NotBlank(message = "O tipo de combustível é obrigatório")
     private String type;
+
+    @NotNull(message = "O resultado da simulação é obrigatório")
+    @PositiveOrZero(message = "O resultado não pode ser negativo")
     private Double result;
+
+    @Setter(AccessLevel.NONE)
     private Instant createdAt;
 
+    @NotNull(message = "A simulação deve estar vinculada a um usuário")
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Simulation() {
-    }
-
-    public Simulation(String title, Double liters, String type, Double result, User user) {
-        this.title = title;
-        this.liters = liters;
-        this.type = type;
-        this.result = result;
-        this.user = user;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Double getLiters() {
-        return liters;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public Double getResult() {
-        return result;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setLiters(Double liters) {
-        this.liters = liters;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setResult(Double result) {
-        this.result = result;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     @PrePersist
     public void prePersist() {
         this.createdAt = Instant.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Simulation that = (Simulation) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
 }
