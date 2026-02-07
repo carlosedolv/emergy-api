@@ -4,7 +4,6 @@ import com.carlosedolv.emergy_api.dtos.request.UserRequestDTO;
 import com.carlosedolv.emergy_api.dtos.response.UserResponseDTO;
 import com.carlosedolv.emergy_api.services.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,8 +14,11 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
-    @Autowired
-    private UserService service;
+    private final UserService service;
+
+    public UserController(UserService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> findAll() {

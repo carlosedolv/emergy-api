@@ -9,7 +9,6 @@ import com.carlosedolv.emergy_api.repositories.UserRepository;
 import com.carlosedolv.emergy_api.services.exceptions.ResourceDataIntegrityException;
 import com.carlosedolv.emergy_api.services.exceptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +16,13 @@ import java.util.List;
 
 @Service
 public class SimulationService {
-    @Autowired
-    private SimulationRepository repository;
+    private final SimulationRepository repository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    public SimulationService(SimulationRepository repository, UserRepository userRepository) {
+        this.repository = repository;
+        this.userRepository = userRepository;
+    }
 
     public List<SimulationResponseDTO> findAll() {
         return repository.findAll().stream().map(SimulationResponseDTO::new).toList();

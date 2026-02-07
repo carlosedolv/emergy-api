@@ -15,8 +15,11 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/simulations")
 public class SimulationController {
-    @Autowired
-    private SimulationService service;
+    private final SimulationService service;
+
+    public SimulationController(SimulationService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<List<SimulationResponseDTO>> findAll() {

@@ -7,7 +7,6 @@ import com.carlosedolv.emergy_api.repositories.UserRepository;
 import com.carlosedolv.emergy_api.services.exceptions.ResourceDataIntegrityException;
 import com.carlosedolv.emergy_api.services.exceptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +14,11 @@ import java.util.List;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository repository;
+    private final UserRepository repository;
+
+    public UserService(UserRepository repository) {
+        this.repository = repository;
+    }
 
     public List<UserResponseDTO> findAll(){
         return repository.findAll().stream().map(UserResponseDTO::new).toList();
