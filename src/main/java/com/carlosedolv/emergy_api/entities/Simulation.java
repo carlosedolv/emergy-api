@@ -13,6 +13,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Simulation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

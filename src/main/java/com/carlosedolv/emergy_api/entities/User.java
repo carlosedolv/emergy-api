@@ -21,6 +21,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +46,7 @@ public class User {
     @Setter(AccessLevel.NONE)
     private Instant createdAt;
 
+    @Builder.Default
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Simulation> simulations = new ArrayList<>();
