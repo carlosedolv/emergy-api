@@ -42,8 +42,7 @@ public class SimulationService {
         if(dto.userId() == null){
             throw new ResourceDataIntegrityException("User ID is required for simulation.");
         }
-        User user  = userRepository.findById(dto.userId())
-                .orElseThrow(() -> new ResourceNotFoundException(dto.userId()));
+        User user  = userRepository.findById(dto.userId()).orElseThrow(() -> new ResourceNotFoundException(dto.userId()));
         Simulation simulation = repository.save(copyDtoToEntity(dto, user));
         return new SimulationResponseDTO(simulation);
     }
