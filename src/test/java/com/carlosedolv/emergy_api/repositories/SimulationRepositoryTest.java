@@ -105,7 +105,7 @@ public class SimulationRepositoryTest {
         simulationRepository.save(simulation);
         simulationRepository.save(simulation2);
 
-        List<Simulation> simulations = simulationRepository.findByTitle("Test");
+        List<Simulation> simulations = simulationRepository.findByTitle("Teste");
 
         assertThat(simulations)
                 .isNotEmpty()

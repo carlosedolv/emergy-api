@@ -43,6 +43,7 @@ public class SimulationServiceTest {
     @BeforeEach
     void setUp() {
         owner = User.builder()
+                .id(1L)
                 .name("Carlos")
                 .email("carlos@email.com")
                 .password("1234")

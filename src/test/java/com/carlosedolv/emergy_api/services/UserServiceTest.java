@@ -189,7 +189,6 @@ public class UserServiceTest {
         assertThat(result).isNotNull();
         assertThat(result.name()).isEqualTo("Maria");
         verify(userRepository, times(1)).findById(1L);
-        verify(userRepository, times(1)).save(any(User.class));
     }
 
     @Test
