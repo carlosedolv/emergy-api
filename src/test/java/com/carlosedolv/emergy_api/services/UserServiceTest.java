@@ -214,4 +214,6 @@ public class UserServiceTest {
         verify(userRepository, times(1)).existsByEmail("outro@test.com");
         verify(userRepository, never()).save(any(User.class));
     }
+
+
 }
