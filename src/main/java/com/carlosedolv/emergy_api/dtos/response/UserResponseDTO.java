@@ -1,11 +1,12 @@
 package com.carlosedolv.emergy_api.dtos.response;
 
 import com.carlosedolv.emergy_api.entities.User;
+import com.carlosedolv.emergy_api.entities.UserRole;
 
 import java.time.LocalDate;
 
-public record UserResponseDTO(Long id, String name, String email, LocalDate birthday) {
+public record UserResponseDTO(Long id, String name, String email, LocalDate birthday, UserRole role) {
     public UserResponseDTO(User entity) {
-        this(entity.getId(), entity.getName(), entity.getEmail(), entity.getBirthday());
+        this(entity.getId(), entity.getName(), entity.getEmail(), entity.getBirthday(), entity.getRole());
     }
 }

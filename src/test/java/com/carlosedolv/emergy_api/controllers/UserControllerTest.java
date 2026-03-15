@@ -233,7 +233,8 @@ public class UserControllerTest {
                 id,
                 updateRequest.name(),
                 updateRequest.email(),
-                updateRequest.birthday()
+                updateRequest.birthday(),
+                user.getRole()
         );
 
         when(userService.update(eq(id), any(UserRequestDTO.class))).thenReturn(updateResponse);

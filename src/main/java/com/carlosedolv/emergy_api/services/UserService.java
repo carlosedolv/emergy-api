@@ -1,9 +1,9 @@
 package com.carlosedolv.emergy_api.services;
 
-import com.carlosedolv.emergy_api.config.SecurityConfig;
 import com.carlosedolv.emergy_api.dtos.request.UserRequestDTO;
 import com.carlosedolv.emergy_api.dtos.response.UserResponseDTO;
 import com.carlosedolv.emergy_api.entities.User;
+import com.carlosedolv.emergy_api.entities.UserRole;
 import com.carlosedolv.emergy_api.repositories.UserRepository;
 import com.carlosedolv.emergy_api.services.exceptions.ResourceDataIntegrityException;
 import com.carlosedolv.emergy_api.services.exceptions.ResourceNotFoundException;
@@ -50,6 +50,7 @@ public class UserService {
                 .email(dto.email())
                 .password(passwordEncoder.encode(dto.password()))
                 .birthday(dto.birthday())
+                .role(UserRole.USER)
                 .build();
 
         entity = repository.save(entity);

@@ -20,6 +20,7 @@ public record UserRequestDTO(
         String password,
 
         LocalDate birthday
+
 ) {
 
 }
