@@ -1,13 +1,13 @@
 package com.carlosedolv.emergy_api.services;
 
-import com.carlosedolv.emergy_api.dtos.request.SimulationRequestDTO;
-import com.carlosedolv.emergy_api.dtos.response.SimulationResponseDTO;
-import com.carlosedolv.emergy_api.entities.Simulation;
-import com.carlosedolv.emergy_api.entities.User;
+import com.carlosedolv.emergy_api.dtos.simulation.SimulationRequestDTO;
+import com.carlosedolv.emergy_api.dtos.simulation.SimulationResponseDTO;
+import com.carlosedolv.emergy_api.domain.entities.Simulation;
+import com.carlosedolv.emergy_api.domain.entities.User;
 import com.carlosedolv.emergy_api.repositories.SimulationRepository;
 import com.carlosedolv.emergy_api.repositories.UserRepository;
-import com.carlosedolv.emergy_api.services.exceptions.ResourceDataIntegrityException;
-import com.carlosedolv.emergy_api.services.exceptions.ResourceNotFoundException;
+import com.carlosedolv.emergy_api.infra.exceptions.custom.ResourceDataIntegrityException;
+import com.carlosedolv.emergy_api.infra.exceptions.custom.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;

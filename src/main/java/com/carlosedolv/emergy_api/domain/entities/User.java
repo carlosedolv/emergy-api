@@ -1,5 +1,6 @@
-package com.carlosedolv.emergy_api.entities;
+package com.carlosedolv.emergy_api.domain.entities;
 
+import com.carlosedolv.emergy_api.domain.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;

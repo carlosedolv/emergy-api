@@ -1,4 +1,4 @@
-package com.carlosedolv.emergy_api.services.exceptions;
+package com.carlosedolv.emergy_api.infra.exceptions.custom;
 
 public class ResourceDataIntegrityException extends RuntimeException {
     public ResourceDataIntegrityException(String message) {

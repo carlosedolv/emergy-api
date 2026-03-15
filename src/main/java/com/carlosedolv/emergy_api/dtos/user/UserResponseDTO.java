@@ -1,7 +1,7 @@
-package com.carlosedolv.emergy_api.dtos.response;
+package com.carlosedolv.emergy_api.dtos.user;
 
-import com.carlosedolv.emergy_api.entities.User;
-import com.carlosedolv.emergy_api.entities.UserRole;
+import com.carlosedolv.emergy_api.domain.entities.User;
+import com.carlosedolv.emergy_api.domain.enums.UserRole;
 
 import java.time.LocalDate;
 

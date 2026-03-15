@@ -1,6 +1,6 @@
 package com.carlosedolv.emergy_api.controllers;
 
-import com.carlosedolv.emergy_api.dtos.request.AuthenticationRequestDTO;
+import com.carlosedolv.emergy_api.dtos.auth.AuthenticationRequestDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

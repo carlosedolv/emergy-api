@@ -1,6 +1,6 @@
 package com.carlosedolv.emergy_api.repositories;
 
-import com.carlosedolv.emergy_api.entities.User;
+import com.carlosedolv.emergy_api.domain.entities.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

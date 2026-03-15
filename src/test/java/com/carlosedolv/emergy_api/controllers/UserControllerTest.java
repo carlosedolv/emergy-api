@@ -1,11 +1,11 @@
 package com.carlosedolv.emergy_api.controllers;
 
-import com.carlosedolv.emergy_api.dtos.request.UserRequestDTO;
-import com.carlosedolv.emergy_api.dtos.response.UserResponseDTO;
-import com.carlosedolv.emergy_api.entities.User;
+import com.carlosedolv.emergy_api.dtos.user.UserRequestDTO;
+import com.carlosedolv.emergy_api.dtos.user.UserResponseDTO;
+import com.carlosedolv.emergy_api.domain.entities.User;
 import com.carlosedolv.emergy_api.services.UserService;
-import com.carlosedolv.emergy_api.services.exceptions.ResourceDataIntegrityException;
-import com.carlosedolv.emergy_api.services.exceptions.ResourceNotFoundException;
+import com.carlosedolv.emergy_api.infra.exceptions.custom.ResourceDataIntegrityException;
+import com.carlosedolv.emergy_api.infra.exceptions.custom.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

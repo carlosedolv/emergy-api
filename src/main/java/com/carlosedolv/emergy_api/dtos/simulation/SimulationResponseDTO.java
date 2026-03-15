@@ -1,7 +1,7 @@
-package com.carlosedolv.emergy_api.dtos.response;
+package com.carlosedolv.emergy_api.dtos.simulation;
 
-import com.carlosedolv.emergy_api.entities.Simulation;
-import jakarta.validation.constraints.*;
+import com.carlosedolv.emergy_api.domain.entities.Simulation;
+import com.carlosedolv.emergy_api.dtos.user.UserResponseDTO;
 
 public record SimulationResponseDTO(
         Long id, String title, Double liters, String type, Double result, UserResponseDTO user

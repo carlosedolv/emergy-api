@@ -1,4 +1,4 @@
-package com.carlosedolv.emergy_api.dtos.request;
+package com.carlosedolv.emergy_api.dtos.simulation;
 
 import jakarta.validation.constraints.*;
 

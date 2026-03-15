@@ -1,7 +1,9 @@
-package com.carlosedolv.emergy_api.controllers.exceptions;
+package com.carlosedolv.emergy_api.infra.exceptions.handler;
 
-import com.carlosedolv.emergy_api.services.exceptions.ResourceDataIntegrityException;
-import com.carlosedolv.emergy_api.services.exceptions.ResourceNotFoundException;
+import com.carlosedolv.emergy_api.infra.exceptions.model.StandardError;
+import com.carlosedolv.emergy_api.infra.exceptions.model.ValidationError;
+import com.carlosedolv.emergy_api.infra.exceptions.custom.ResourceDataIntegrityException;
+import com.carlosedolv.emergy_api.infra.exceptions.custom.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

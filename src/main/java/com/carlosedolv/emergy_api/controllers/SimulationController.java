@@ -1,7 +1,7 @@
 package com.carlosedolv.emergy_api.controllers;
 
-import com.carlosedolv.emergy_api.dtos.request.SimulationRequestDTO;
-import com.carlosedolv.emergy_api.dtos.response.SimulationResponseDTO;
+import com.carlosedolv.emergy_api.dtos.simulation.SimulationRequestDTO;
+import com.carlosedolv.emergy_api.dtos.simulation.SimulationResponseDTO;
 import com.carlosedolv.emergy_api.services.SimulationService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

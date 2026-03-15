@@ -1,7 +1,7 @@
 package com.carlosedolv.emergy_api.controllers;
 
-import com.carlosedolv.emergy_api.dtos.request.UserRequestDTO;
-import com.carlosedolv.emergy_api.dtos.response.UserResponseDTO;
+import com.carlosedolv.emergy_api.dtos.user.UserRequestDTO;
+import com.carlosedolv.emergy_api.dtos.user.UserResponseDTO;
 import com.carlosedolv.emergy_api.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.carlosedolv.emergy_api.dtos.request;
+package com.carlosedolv.emergy_api.dtos.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

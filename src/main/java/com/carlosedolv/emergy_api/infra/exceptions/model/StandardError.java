@@ -1,4 +1,4 @@
-package com.carlosedolv.emergy_api.controllers.exceptions;
+package com.carlosedolv.emergy_api.infra.exceptions.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

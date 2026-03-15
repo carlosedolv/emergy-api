@@ -1,4 +1,4 @@
-package com.carlosedolv.emergy_api.entities;
+package com.carlosedolv.emergy_api.domain.enums;
 
 public enum UserRole {
     ADMIN("admin"),
