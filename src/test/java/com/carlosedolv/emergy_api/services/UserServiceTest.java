@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -27,6 +28,9 @@ import static org.mockito.Mockito.*;
 public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserService userService;
@@ -138,17 +142,22 @@ public class UserServiceTest {
     @DisplayName("Deve inserir novo usuário com sucesso")
     void testSave_Success() {
         // Arrange
+        String encodedPassword = "encrypted_password";
         when(userRepository.existsByEmail(anyString())).thenReturn(false);
+        when(passwordEncoder.encode(user.getPassword())).thenReturn(encodedPassword);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         // Act
         UserResponseDTO result = userService.save(userRequestDTO);
 
-        // Assert & Verify
+        // Assert
         assertThat(result).isNotNull();
         assertThat(result.name()).isEqualTo("Carlos");
         assertThat(result.email()).isEqualTo("carlos@test.com");
+
+        //Verify
         verify(userRepository, times(1)).existsByEmail("carlos@test.com");
+        verify(passwordEncoder, times(1)).encode(user.getPassword());
         verify(userRepository, times(1)).save(any(User.class));
     }
 
@@ -200,6 +209,8 @@ public class UserServiceTest {
     @Test
     @DisplayName("Deve atualizar usuário com sucesso")
     void testUpdate_Success() {
+        // Arrange
+        String encodedPassword = "encrypted_password";
         UserRequestDTO update = new UserRequestDTO(
                 "Maria",
                 "maria@test.com",
@@ -207,8 +218,8 @@ public class UserServiceTest {
                 LocalDate.of(1995, 5, 15)
         );
 
-        // Arrange
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(passwordEncoder.encode(update.password())).thenReturn(encodedPassword);
 
         // Act
         UserResponseDTO result = userService.update(1L, update);
@@ -216,7 +227,10 @@ public class UserServiceTest {
         // Assert & Verify
         assertThat(result).isNotNull();
         assertThat(result.name()).isEqualTo("Maria");
+        assertThat(result.email()).isEqualTo("maria@test.com");
+
         verify(userRepository, times(1)).findById(1L);
+        verify(passwordEncoder, times(1)).encode(update.password());
     }
 
     @Test

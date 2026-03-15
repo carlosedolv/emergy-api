@@ -1,5 +1,6 @@
 package com.carlosedolv.emergy_api.services;
 
+import com.carlosedolv.emergy_api.config.SecurityConfig;
 import com.carlosedolv.emergy_api.dtos.request.UserRequestDTO;
 import com.carlosedolv.emergy_api.dtos.response.UserResponseDTO;
 import com.carlosedolv.emergy_api.entities.User;
@@ -8,6 +9,7 @@ import com.carlosedolv.emergy_api.services.exceptions.ResourceDataIntegrityExcep
 import com.carlosedolv.emergy_api.services.exceptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +17,11 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<UserResponseDTO> findAll(){
@@ -40,7 +44,15 @@ public class UserService {
         if(repository.existsByEmail(dto.email())) {
             throw new ResourceDataIntegrityException("Email already exists.");
         }
-        User entity = repository.save(copyDtoToEntity(dto));
+
+        User entity = User.builder()
+                .name(dto.name())
+                .email(dto.email())
+                .password(passwordEncoder.encode(dto.password()))
+                .birthday(dto.birthday())
+                .build();
+
+        entity = repository.save(entity);
         return new UserResponseDTO(entity);
     }
 
@@ -63,19 +75,10 @@ public class UserService {
         return new UserResponseDTO(entity);
     }
 
-    private User copyDtoToEntity(UserRequestDTO dto) {
-        User entity = new User();
-        entity.setName(dto.name());
-        entity.setEmail(dto.email());
-        entity.setPassword(dto.password());
-        entity.setBirthday(dto.birthday());
-        return entity;
-    }
-
     private void updateEntity(User entity, UserRequestDTO dto) {
         entity.setName(dto.name());
         entity.setEmail(dto.email());
-        entity.setPassword(dto.password());
+        entity.setPassword(passwordEncoder.encode(dto.password()));
         entity.setBirthday(dto.birthday());
     }
 
