@@ -107,6 +107,34 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Deve buscar usuário por email")
+    void testFindByEmail() {
+        // Arrange
+        when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+
+        // Act
+        UserResponseDTO result = userService.findByEmail(user.getEmail());
+
+        // Assert & Verify
+        assertThat(result).isNotNull();
+        assertThat(result.email()).isEqualTo(user.getEmail());
+        assertThat(result.name()).isEqualTo(user.getName());
+        verify(userRepository, times(1)).findByEmail(user.getEmail());
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção quando email do usuário não existe")
+    void testFindByEmail_NotFound() {
+        String invalidEmail = "notexist@gmail.com";
+        when(userRepository.findByEmail(invalidEmail)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.findByEmail(invalidEmail))
+                .isInstanceOf(ResourceNotFoundException.class);
+
+        verify(userRepository, times(1)).findByEmail(invalidEmail);
+    }
+
+    @Test
     @DisplayName("Deve inserir novo usuário com sucesso")
     void testSave_Success() {
         // Arrange

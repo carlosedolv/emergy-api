@@ -85,6 +85,7 @@ public class UserControllerTest {
         // Arrange
         when(userService.findById(1L)).thenReturn(userResponseDTO);
 
+        // Act & Assert
         mockMvc.perform(get("/users/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -92,21 +93,60 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.name").value("Carlos"))
                 .andExpect(jsonPath("$.email").value("carlos@test.com"));
 
-        verify(userService, times(1)).findById(1L);
+        // Verify
+        verify(userService, times(1)).findById(user.getId());
     }
 
     @Test
-    @DisplayName("GET /users/{id} - Deve retornar 404 quando usuário não existe")
+    @DisplayName("GET /users/{id} - Deve retornar 404 quando id do usuário não existe")
     void testFindById_NotFound() throws Exception {
+        // Arrange
         Long invalidId = 999L;
         when(userService.findById(invalidId)).thenThrow(new ResourceNotFoundException(invalidId));
 
+        // Act & Assert
         mockMvc.perform(get("/users/" + invalidId))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status").value(404))
                 .andExpect(jsonPath("$.error").value("Resource not found"));
 
+        // Verify
         verify(userService, times(1)).findById(invalidId);
+    }
+
+    @Test
+    @DisplayName("GET /users/email/{email} - Deve retornar usuário por email")
+    void testFindByEmail_Success() throws Exception {
+        // Arrange
+        when(userService.findByEmail(user.getEmail())).thenReturn(userResponseDTO);
+
+        // Act & Assert
+        mockMvc.perform(get("/users/email/" + user.getEmail()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Carlos"))
+                .andExpect(jsonPath("$.email").value("carlos@test.com"));
+
+        // Verify
+        verify(userService, times(1)).findByEmail(user.getEmail());
+    }
+
+    @Test
+    @DisplayName("GET /users/{email} - Deve retornar 404 quando email do usuário não existe")
+    void testFindByEmail_NotFound() throws Exception {
+        // Arrange
+        String invalidEmail = "notexist@gmail.com";
+        when(userService.findByEmail(invalidEmail)).thenThrow(new ResourceNotFoundException(invalidEmail));
+
+        // Act & Assert
+        mockMvc.perform(get("/users/email/" + invalidEmail))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.error").value("Resource not found"));
+
+        // Verify
+        verify(userService, times(1)).findByEmail(invalidEmail);
     }
 
     @Test
