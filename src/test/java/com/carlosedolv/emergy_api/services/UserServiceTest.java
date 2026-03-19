@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
@@ -195,15 +196,33 @@ public class UserServiceTest {
     @DisplayName("Deve lançar exceção ao deletar usuário inexistente")
     void testDelete_NotFound() {
         // Arrange
-        when(userRepository.findById(999L)).thenReturn(Optional.empty());
+        Long invalidId = 999L;
+        when(userRepository.findById(invalidId)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThatThrownBy(() -> userService.delete(999L))
+        assertThatThrownBy(() -> userService.delete(invalidId))
                 .isInstanceOf(ResourceNotFoundException.class);
 
         // Verify
         verify(userRepository, times(1)).findById(999L);
         verify(userRepository, never()).delete(any(User.class));
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao tentar deletar um usuário com simulações vinculadas")
+    void testDelete_WhenIdHasDependencies_DataIntegrityException() {
+        // Arrange
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+
+        doThrow(DataIntegrityViolationException.class).when(userRepository).delete(user);
+
+        // Act & Assert
+        assertThatThrownBy(() -> userService.delete(user.getId()))
+                .isInstanceOf(ResourceDataIntegrityException.class);
+
+        // Verify
+        verify(userRepository, times(1)).findById(user.getId());
+        verify(userRepository, times(1)).delete(user);
     }
 
     @Test
@@ -256,6 +275,4 @@ public class UserServiceTest {
         verify(userRepository, times(1)).existsByEmail("outro@test.com");
         verify(userRepository, never()).save(any(User.class));
     }
-
-
 }

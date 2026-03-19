@@ -15,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -228,6 +229,23 @@ public class SimulationServiceTest {
     }
 
     @Test
+    @DisplayName("Deve lançar exceção ao tentar deletar simulação com restriçoes de integridade")
+    void testDelete_WhenIdHasDependencies_DataIntegrityException() {
+        // Arrange
+        when(simulationRepository.findById(simulation.getId())).thenReturn(Optional.of(simulation));
+
+        doThrow(DataIntegrityViolationException.class).when(simulationRepository).delete(simulation);
+
+        // Act & Assert
+        assertThatThrownBy(() -> simulationService.delete(simulation.getId()))
+                .isInstanceOf(ResourceDataIntegrityException.class);
+
+        // Verify
+        verify(simulationRepository, times(1)).findById(simulation.getId());
+        verify(simulationRepository, times(1)).delete(simulation);
+    }
+
+    @Test
     @DisplayName("Deve atualizar simulação com sucesso")
     void testUpdate_Success() {
         // Arrange
@@ -247,13 +265,32 @@ public class SimulationServiceTest {
     @Test
     @DisplayName("Deve lançar exceção ao atualizar simulação inexistente")
     void testUpdate_NotFound() {
+        // Arrange
         Long invalidId = 999L;
         when(simulationRepository.findById(invalidId)).thenReturn(Optional.empty());
 
+        // Act & Assert
         assertThatThrownBy(() -> simulationService.update(invalidId, simulationRequestDTO))
                 .isInstanceOf(ResourceNotFoundException.class);
 
+        // Verify
         verify(simulationRepository, times(1)).findById(invalidId);
         verify(simulationRepository, never()).save(any(Simulation.class));
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao tentar atualizar simulação com violação de integridade")
+    void testUpdate_WhenRestrictionsViolated_DataIntegrityException() {
+        // Arrange
+        Simulation spySimulation = spy(simulation);
+        when(simulationRepository.findById(1L)).thenReturn(Optional.of(spySimulation));
+        doThrow(DataIntegrityViolationException.class).when(spySimulation).setTitle(anyString());
+
+        // Act & Assert
+        assertThatThrownBy(() -> simulationService.update(1L, simulationRequestDTO))
+                .isInstanceOf(ResourceDataIntegrityException.class);
+
+        // Verify
+        verify(simulationRepository, times(1)).findById(1L);
     }
 }

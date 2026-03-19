@@ -1,6 +1,7 @@
 package com.carlosedolv.emergy_api.repositories;
 
 import com.carlosedolv.emergy_api.domain.entities.User;
+import com.carlosedolv.emergy_api.domain.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,7 @@ public class UserRepositoryTest {
                 .email("carlos@email.com")
                 .password("1234")
                 .birthday(LocalDate.of(2004, 8, 21))
+                .role(UserRole.USER)
                 .build();
     }
 
@@ -42,6 +44,7 @@ public class UserRepositoryTest {
         assertThat(savedUser.getName()).isEqualTo("Carlos");
         assertThat(savedUser.getEmail()).isEqualTo("carlos@email.com");
         assertThat(savedUser.getCreatedAt()).isNotNull();
+        assertThat(savedUser.getRole()).isNotNull();
     }
 
     @Test
@@ -52,6 +55,7 @@ public class UserRepositoryTest {
                 .email("maria@email.com")
                 .password("5678")
                 .birthday(LocalDate.of(1992, 4, 12))
+                .role(UserRole.USER)
                 .build();
 
         userRepository.save(user);
